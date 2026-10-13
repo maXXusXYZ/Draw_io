@@ -1,0 +1,956 @@
+<title>Cómo actúa el bótox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap">
+<style>
+  /* Layout: medical-plate spread — zoom circle beside a skin cross-section, narration and transport underneath.
+     Single light "illustration paper" look by choice, matching the reference plate. */
+  :root {
+    --paper: #f5f3ee;
+    --paper-hi: #fbfaf6;
+    --ink: #1f1c19;
+    --ink-soft: #5d5750;
+    --rule: #d9d3c8;
+    --gold: #d9a521;
+    --gold-deep: #9a6c0c;
+    --muscle: #c2463d;
+    --muscle-deep: #8f2c27;
+    --ach: #3d7cc9;
+    --toxin: #8a4cc0;
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-label: "Archivo Narrow", "Arial Narrow", "Roboto Condensed", sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 28px 40px;
+    display: grid;
+    gap: 22px;
+  }
+  header { display: grid; gap: 6px; }
+  .eyebrow {
+    margin: 0;
+    font-family: var(--font-label);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+  h1 {
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(28px, 4.6vw, 46px);
+    line-height: 1.05;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .lede { margin: 4px 0 0; max-width: 62ch; color: var(--ink-soft); }
+
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr);
+    gap: 18px 28px;
+    align-items: start;
+  }
+  figure { margin: 0; min-width: 0; display: grid; gap: 6px; }
+  figcaption {
+    font-family: var(--font-label);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  svg.plate { width: 100%; height: auto; display: block; }
+  #zoomFig { max-width: 540px; justify-self: center; width: 100%; }
+
+  .lbl {
+    font-family: var(--font-label);
+    font-size: 19px;
+    font-weight: 500;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--paper-hi);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+  }
+  .lbl.sm { font-size: 15px; }
+  .lbl.on-muscle { fill: #fff6ef; stroke: none; font-weight: 600; }
+  .lbl.on-muscle.status { font-weight: 500; font-size: 16px; }
+  .lbl.plain { stroke: none; }
+  .leader { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+
+  /* Transport */
+  .controls {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "transport chips lang";
+    gap: 12px 18px;
+    align-items: center;
+    padding-block: 14px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .transport { grid-area: transport; display: flex; gap: 8px; align-items: center; }
+  .chips { grid-area: chips; }
+  .lang { grid-area: lang; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+  .icon-btn, .play {
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    background: var(--paper-hi);
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    padding: 0;
+  }
+  .play { width: 52px; height: 52px; background: var(--ink); border-color: var(--ink); color: var(--paper-hi); }
+  .icon-btn:hover { border-color: var(--ink-soft); }
+  .play:hover { background: #3a342e; }
+  .icon-btn svg, .play svg { width: 18px; height: 18px; fill: currentColor; }
+  .play svg { width: 20px; height: 20px; }
+
+  .chips {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .chip {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    display: flex; align-items: center; gap: 7px;
+    padding: 8px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--paper-hi);
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .chip-fill {
+    position: absolute; left: 0; bottom: 0;
+    height: 3px; width: 100%;
+    background: var(--gold);
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
+  }
+  .chip-n {
+    flex: none;
+    display: inline-grid; place-items: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: 12px; font-weight: 600;
+    border: 1px solid var(--ink-soft);
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .chip-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip[aria-current="step"] { border-color: var(--ink); }
+  .chip[aria-current="step"] .chip-n { background: var(--ink); border-color: var(--ink); color: var(--paper-hi); }
+
+  .lang { justify-self: end; display: flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .lang button {
+    border: 0; background: var(--paper-hi);
+    padding: 8px 11px; font-size: 13px; font-weight: 600; letter-spacing: .06em;
+    color: var(--ink-soft);
+  }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper-hi); }
+
+  /* Narration */
+  .story {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px 40px;
+    min-height: 9.5rem;
+    align-items: start;
+  }
+  .story-head { display: grid; gap: 4px; }
+  .kicker {
+    margin: 0;
+    font-family: var(--font-label);
+    font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--gold-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .story h2 {
+    margin: 0;
+    font-size: clamp(22px, 2.6vw, 30px);
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .story-body { display: grid; gap: 14px; min-width: 0; }
+  .story-body p { margin: 0; max-width: 62ch; }
+  .fade { animation: fadeIn .45s ease both; }
+  @keyframes fadeIn { from { opacity: .2; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .timeline {
+    list-style: none; margin: 0; padding: 14px 0 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    position: relative;
+  }
+  .timeline::before {
+    content: ""; position: absolute; left: 6px; right: 6px; top: 19px;
+    height: 2px; background: var(--rule);
+  }
+  .timeline::after {
+    content: ""; position: absolute; left: 6px; top: 19px; height: 2px;
+    width: calc((100% - 12px) * var(--q, 0));
+    background: var(--gold);
+  }
+  .timeline[hidden] { display: none; }
+  .timeline li { position: relative; padding-top: 16px; font-size: 14px; line-height: 1.3; color: var(--ink-soft); }
+  .timeline li::before {
+    content: ""; position: absolute; top: 0; left: 0;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--paper); border: 2px solid var(--rule);
+  }
+  .timeline li.on { color: var(--ink); }
+  .timeline li.on::before { background: var(--gold); border-color: var(--gold-deep); }
+  .timeline b { display: block; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .note { margin: 0; font-size: 13px; color: var(--ink-soft); max-width: 70ch; }
+
+  @media (max-width: 820px) {
+    .stage { grid-template-columns: minmax(0, 1fr); }
+    .story { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  }
+  @media (max-width: 640px) {
+    .controls {
+      grid-template-columns: auto auto;
+      grid-template-areas: "transport lang" "chips chips";
+      justify-content: space-between;
+    }
+    .chips { gap: 4px; }
+    .chip { flex-direction: column; gap: 4px; padding: 7px 2px 9px; text-align: center; font-size: 11.5px; }
+    .chip-name { max-width: 100%; }
+    #block .lbl { font-size: 27px; }
+  }
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow" data-i18n="eyebrow">Medicina estética · explicación animada</p>
+    <h1 data-i18n="title">Cómo actúa el bótox</h1>
+    <p class="lede" data-i18n="lede">Sigue la señal desde el nervio hasta el músculo y mira qué cambia cuando la toxina botulínica bloquea la acetilcolina.</p>
+  </header>
+
+  <section class="stage">
+    <figure id="zoomFig">
+      <figcaption data-i18n="zoomCap">Zoom: unión neuromuscular</figcaption>
+      <svg id="zoom" class="plate" viewBox="0 0 600 600" role="img" aria-labelledby="zoomCapTitle">
+        <title id="zoomCapTitle">Unión neuromuscular: terminación nerviosa, vesículas de acetilcolina y músculo</title>
+        <defs>
+          <clipPath id="zClip"><circle cx="300" cy="300" r="286"/></clipPath>
+          <clipPath id="mClip"><path id="mClipPath"/></clipPath>
+          <clipPath id="tClip"><path id="tClipPath"/></clipPath>
+          <radialGradient id="zBg" cx="50%" cy="38%" r="72%">
+            <stop offset="0" stop-color="#fdfdfb"/>
+            <stop offset="1" stop-color="#e2eaf1"/>
+          </radialGradient>
+          <linearGradient id="goldG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f8df80"/>
+            <stop offset=".55" stop-color="#e8b733"/>
+            <stop offset="1" stop-color="#c98f15"/>
+          </linearGradient>
+          <radialGradient id="vesG" cx="40%" cy="35%" r="70%">
+            <stop offset="0" stop-color="#fff7d9"/>
+            <stop offset="1" stop-color="#efcf78"/>
+          </radialGradient>
+          <linearGradient id="zMuscleG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e5766a"/>
+            <stop offset=".35" stop-color="#c84c42"/>
+            <stop offset="1" stop-color="#8c2a25"/>
+          </linearGradient>
+          <radialGradient id="pulseG">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+            <stop offset=".45" stop-color="#fff2b0" stop-opacity=".85"/>
+            <stop offset="1" stop-color="#ffe680" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g clip-path="url(#zClip)">
+          <rect x="0" y="0" width="600" height="600" fill="url(#zBg)"/>
+          <path id="zMuscle" fill="url(#zMuscleG)"/>
+          <g clip-path="url(#mClip)">
+            <g id="sarc"></g>
+            <g id="striae"></g>
+          </g>
+          <path id="zMuscleRim" fill="none" stroke="#f3a597" stroke-width="3"/>
+          <g id="receptors"></g>
+          <g id="achDots"></g>
+          <path id="terminal" fill="url(#goldG)" stroke="#b5841a" stroke-width="3"/>
+          <g clip-path="url(#tClip)">
+            <ellipse id="zPulse" cx="300" cy="0" rx="70" ry="40" fill="url(#pulseG)" opacity="0"/>
+          </g>
+          <g id="vesicles"></g>
+          <g id="blocks"></g>
+          <g id="toxins"></g>
+
+          <!-- labels -->
+          <text class="lbl" x="46" y="204"><tspan data-i18n="lTerm1">Terminación</tspan><tspan x="46" dy="23" data-i18n="lTerm2">nerviosa</tspan></text>
+          <path class="leader" d="M150,216 L176,222"/>
+          <text class="lbl" x="452" y="182"><tspan data-i18n="lVes1">Vesículas de</tspan><tspan x="452" dy="23" data-i18n="lVes2">acetilcolina</tspan></text>
+          <path class="leader" d="M448,190 L388,204"/>
+          <g id="zAchLbl" opacity="0">
+            <text class="lbl" x="452" y="378" data-i18n="lAch">Acetilcolina</text>
+            <path class="leader" d="M448,372 L384,390"/>
+          </g>
+          <g id="zToxLbl" opacity="0">
+            <text class="lbl" x="46" y="318"><tspan data-i18n="lTox1">Toxina</tspan><tspan x="46" dy="23" data-i18n="lTox2">botulínica</tspan></text>
+            <path class="leader" d="M128,334 L200,350"/>
+          </g>
+          <g id="zNoLbl" opacity="0">
+            <rect x="160" y="444" width="280" height="58" rx="29" fill="#fbfaf6" fill-opacity=".95" stroke="#8f2c27" stroke-width="2"/>
+            <text class="lbl plain" x="300" y="468" text-anchor="middle" font-weight="600" data-i18n="lNo1">Sin acetilcolina</text>
+            <text class="lbl plain sm" x="300" y="490" text-anchor="middle" data-i18n="lNo2">sin señal de contracción</text>
+          </g>
+          <text class="lbl on-muscle" x="300" y="540" text-anchor="middle" data-i18n="lMus">Músculo</text>
+          <text id="zStatus" class="lbl on-muscle status" x="300" y="563" text-anchor="middle">en reposo</text>
+        </g>
+        <circle cx="300" cy="300" r="286" fill="none" stroke="#3b3631" stroke-width="3"/>
+      </svg>
+    </figure>
+
+    <figure>
+      <figcaption data-i18n="blockCap">Corte de la piel</figcaption>
+      <svg id="block" class="plate" viewBox="0 -110 820 700" role="img" aria-labelledby="blockCapTitle">
+        <title id="blockCapTitle">Corte de piel con epidermis, dermis, grasa subcutánea, músculo y nervio</title>
+        <defs>
+          <clipPath id="frontClip"><path id="frontClipPath"/></clipPath>
+          <clipPath id="rightClip"><rect x="0" y="175" width="170" height="360"/></clipPath>
+          <linearGradient id="topG" x1="0" y1="1" x2=".4" y2="0">
+            <stop offset="0" stop-color="#ecc7a6"/>
+            <stop offset="1" stop-color="#f3dcc3"/>
+          </linearGradient>
+          <linearGradient id="bMuscleG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#cf5348"/>
+            <stop offset="1" stop-color="#a5352e"/>
+          </linearGradient>
+          <radialGradient id="cloudG">
+            <stop offset="0" stop-color="#9b5fd2" stop-opacity=".75"/>
+            <stop offset=".6" stop-color="#9b5fd2" stop-opacity=".32"/>
+            <stop offset="1" stop-color="#9b5fd2" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowG">
+            <stop offset="0" stop-color="#fffef2" stop-opacity="1"/>
+            <stop offset=".4" stop-color="#fff0a0" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#ffe066" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="blur6" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="8"/></filter>
+        </defs>
+        <ellipse cx="330" cy="548" rx="310" ry="20" fill="#5a3a28" opacity=".13" filter="url(#blur6)"/>
+        <g id="rightFace" transform="matrix(1 -0.617647 0 1 420 0)"><g clip-path="url(#rightClip)" id="rightInner"></g></g>
+        <g id="frontFace" clip-path="url(#frontClip)"></g>
+        <path id="topFace" fill="url(#topG)" stroke="#b98a6a" stroke-opacity=".5" stroke-width="1.2"/>
+        <g id="creases"></g>
+        <path id="frontEdge" fill="none" stroke="#7a4a36" stroke-opacity=".35" stroke-width="1.4"/>
+        <polygon points="420,175 590,70 590,430 420,535" fill="none" stroke="#7a4a36" stroke-opacity=".35" stroke-width="1.4"/>
+
+        <!-- zoom marker -->
+        <circle id="zMark" cx="262" cy="424" r="20" fill="none" stroke="#fbfaf6" stroke-width="2.2" stroke-dasharray="5 4"/>
+        <text class="lbl on-muscle status" x="288" y="460" font-style="italic" data-i18n="zoomTag">zoom</text>
+
+        <!-- layer brackets -->
+        <g id="brackets" fill="none" stroke="#1f1c19" stroke-width="1.4">
+          <path d="M600,71 L610,71 L610,94 L600,94"/>
+          <path d="M600,97 L610,97 L610,208 L600,208"/>
+          <path d="M600,211 L610,211 L610,283 L600,283"/>
+          <path d="M600,286 L610,286 L610,429 L600,429"/>
+        </g>
+        <text class="lbl" x="620" y="89" data-i18n="epi">Epidermis</text>
+        <text class="lbl" x="620" y="159" data-i18n="der">Dermis</text>
+        <text class="lbl" x="620" y="242"><tspan data-i18n="fat1">Grasa</tspan><tspan x="620" dy="23" data-i18n="fat2">subcutánea</tspan></text>
+        <text class="lbl" x="620" y="364" data-i18n="mus">Músculo</text>
+        <path class="leader" d="M78,556 L78,502"/>
+        <text class="lbl" x="78" y="578" text-anchor="middle" data-i18n="nerve">Nervio</text>
+
+        <g id="syringe" opacity="0">
+          <line x1="0" y1="0" x2="0" y2="-118" stroke="#8d969e" stroke-width="3.2" stroke-linecap="round"/>
+          <line x1="-.8" y1="-6" x2="-.8" y2="-116" stroke="#eef2f5" stroke-width="1"/>
+          <path d="M-7,-118 L7,-118 L10,-140 L-10,-140 Z" fill="#5f9fd4" stroke="#3d78ab" stroke-width="1.2"/>
+          <rect x="-22" y="-340" width="44" height="200" rx="5" fill="#e6f0f8" fill-opacity=".8" stroke="#8aa0b2" stroke-width="2"/>
+          <rect id="liquid" x="-19" width="38" fill="#b9d3ee"/>
+          <g stroke="#8aa0b2" stroke-width="1.4">
+            <line x1="-22" x2="-11" y1="-160" y2="-160"/><line x1="-22" x2="-15" y1="-180" y2="-180"/>
+            <line x1="-22" x2="-11" y1="-200" y2="-200"/><line x1="-22" x2="-15" y1="-220" y2="-220"/>
+            <line x1="-22" x2="-11" y1="-240" y2="-240"/><line x1="-22" x2="-15" y1="-260" y2="-260"/>
+            <line x1="-22" x2="-11" y1="-280" y2="-280"/><line x1="-22" x2="-15" y1="-300" y2="-300"/>
+            <line x1="-22" x2="-11" y1="-320" y2="-320"/>
+          </g>
+          <rect id="rod" x="-5" width="10" height="160" fill="#d9e0e6" stroke="#9aa7b2" stroke-width="1.2"/>
+          <rect id="stopper" x="-20" width="40" height="14" rx="2" fill="#3b3b40"/>
+          <rect x="-36" y="-346" width="72" height="8" rx="3" fill="#d9e0e6" stroke="#9aa7b2" stroke-width="1.2"/>
+          <rect id="thumb" x="-26" width="52" height="8" rx="3" fill="#cfd7de" stroke="#9aa7b2" stroke-width="1.2"/>
+        </g>
+        <g id="needleLbl" opacity="0">
+          <text class="lbl" x="476" y="-64"><tspan data-i18n="needle1">Aguja con</tspan><tspan x="476" dy="23" data-i18n="needle2">toxina botulínica</tspan></text>
+        </g>
+      </svg>
+    </figure>
+  </section>
+
+  <div class="controls">
+    <div class="transport">
+      <button id="prev" class="icon-btn" type="button" aria-label="Paso anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+      </button>
+      <button id="play" class="play" type="button" aria-label="Pausar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path id="playIcon" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+      </button>
+      <button id="next" class="icon-btn" type="button" aria-label="Paso siguiente">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+      </button>
+    </div>
+    <ol class="chips" id="chips"></ol>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <section class="story" aria-live="polite">
+    <div class="story-head">
+      <p class="kicker" id="stepOf">Paso 1 de 5</p>
+      <h2 id="stepTitle">La señal de contracción</h2>
+    </div>
+    <div class="story-body">
+      <p id="stepText"></p>
+      <ol class="timeline" id="timeline" hidden>
+        <li><b data-i18n="tl1a">Día 2–3</b><span data-i18n="tl1b">se empieza a notar</span></li>
+        <li><b data-i18n="tl2a">Día 14</b><span data-i18n="tl2b">efecto máximo</span></li>
+        <li><b data-i18n="tl3a">Mes 3–4</b><span data-i18n="tl3b">la señal vuelve</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <p class="note" data-i18n="note">Explicación divulgativa y simplificada. No sustituye la valoración de un profesional sanitario.</p>
+</main>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const $ = (s) => document.querySelector(s);
+  const mk = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const ease = (x) => (x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+  const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const win = (t, a, b, fi = .3, fo = .3) => Math.max(0, Math.min(seg(t, a, a + fi), 1 - seg(t, b - fo, b)));
+  const f1 = (n) => Math.round(n * 10) / 10;
+
+  // ---------- copy ----------
+  const I18N = {
+    es: {
+      eyebrow: 'Medicina estética · explicación animada',
+      title: 'Cómo actúa el bótox',
+      lede: 'Sigue la señal desde el nervio hasta el músculo y mira qué cambia cuando la toxina botulínica bloquea la acetilcolina.',
+      zoomCap: 'Zoom: unión neuromuscular', blockCap: 'Corte de la piel',
+      lTerm1: 'Terminación', lTerm2: 'nerviosa', lVes1: 'Vesículas de', lVes2: 'acetilcolina',
+      lAch: 'Acetilcolina', lTox1: 'Toxina', lTox2: 'botulínica',
+      lNo1: 'Sin acetilcolina', lNo2: 'sin señal de contracción', lMus: 'Músculo',
+      stRest: 'en reposo', stCon: 'contraído', stRel: 'relajado',
+      epi: 'Epidermis', der: 'Dermis', fat1: 'Grasa', fat2: 'subcutánea', mus: 'Músculo', nerve: 'Nervio',
+      needle1: 'Aguja con', needle2: 'toxina botulínica', zoomTag: 'zoom',
+      tl1a: 'Día 2–3', tl1b: 'se empieza a notar', tl2a: 'Día 14', tl2b: 'efecto máximo', tl3a: 'Mes 3–4', tl3b: 'la señal vuelve',
+      note: 'Explicación divulgativa y simplificada. No sustituye la valoración de un profesional sanitario.',
+      play: 'Reproducir', pause: 'Pausar', prev: 'Paso anterior', next: 'Paso siguiente',
+      stepOf: (n) => `Paso ${n} de 5`,
+      steps: [
+        { chip: 'Señal', h: 'La señal de contracción',
+          p: 'El nervio envía un impulso eléctrico. Al llegar a la terminación nerviosa, las vesículas liberan acetilcolina, que se une al músculo y le ordena contraerse. Cada gesto repetido pliega la piel y marca la arruga.' },
+        { chip: 'Inyección', h: 'La inyección',
+          p: 'Con una aguja muy fina se inyecta una dosis pequeña de toxina botulínica en el músculo que forma la arruga. La toxina se difunde hasta las terminaciones nerviosas cercanas y se adhiere a ellas.' },
+        { chip: 'Bloqueo', h: 'Bloqueo de la acetilcolina',
+          p: 'La toxina entra en la terminación nerviosa y corta una proteína (SNAP-25) que las vesículas necesitan para soltar su contenido. El impulso sigue llegando, pero ya no sale acetilcolina.' },
+        { chip: 'Relajación', h: 'El músculo se relaja',
+          p: 'Sin acetilcolina, el músculo no recibe la orden de contraerse. Se relaja, deja de plegar la piel y la arruga se suaviza. La sensibilidad de la zona no cambia: solo se frena la señal de movimiento.' },
+        { chip: 'Duración', h: 'Un efecto temporal',
+          p: 'El efecto empieza a notarse a los 2–3 días y llega a su máximo hacia las 2 semanas. Con el tiempo la terminación nerviosa repone sus proteínas y la señal vuelve, por eso el tratamiento suele repetirse cada 3–4 meses.' },
+      ],
+    },
+    en: {
+      eyebrow: 'Aesthetic medicine · animated explainer',
+      title: 'How botox works',
+      lede: 'Follow the signal from nerve to muscle, and see what changes once botulinum toxin blocks acetylcholine.',
+      zoomCap: 'Zoom: neuromuscular junction', blockCap: 'Skin cross-section',
+      lTerm1: 'Nerve', lTerm2: 'ending', lVes1: 'Acetylcholine', lVes2: 'vesicles',
+      lAch: 'Acetylcholine', lTox1: 'Botulinum', lTox2: 'toxin',
+      lNo1: 'No acetylcholine', lNo2: 'no signal to contract', lMus: 'Muscle',
+      stRest: 'at rest', stCon: 'contracted', stRel: 'relaxed',
+      epi: 'Epidermis', der: 'Dermis', fat1: 'Subcutaneous', fat2: 'fat', mus: 'Muscle', nerve: 'Nerve',
+      needle1: 'Needle with', needle2: 'botulinum toxin', zoomTag: 'zoom',
+      tl1a: 'Day 2–3', tl1b: 'starts to show', tl2a: 'Day 14', tl2b: 'full effect', tl3a: 'Month 3–4', tl3b: 'signal returns',
+      note: 'A simplified, educational explanation. It does not replace an assessment by a qualified clinician.',
+      play: 'Play', pause: 'Pause', prev: 'Previous step', next: 'Next step',
+      stepOf: (n) => `Step ${n} of 5`,
+      steps: [
+        { chip: 'Signal', h: 'The signal to contract',
+          p: 'The nerve sends an electrical impulse. At the nerve ending, vesicles release acetylcholine, which binds to the muscle and tells it to contract. Every repeated expression folds the skin and deepens the line.' },
+        { chip: 'Injection', h: 'The injection',
+          p: 'A very fine needle places a small dose of botulinum toxin into the muscle that forms the line. The toxin spreads to the nearby nerve endings and attaches to them.' },
+        { chip: 'Block', h: 'Acetylcholine is blocked',
+          p: 'The toxin enters the nerve ending and cuts a protein (SNAP-25) that vesicles need to release their contents. The impulse still arrives, but no acetylcholine comes out.' },
+        { chip: 'Relax', h: 'The muscle relaxes',
+          p: 'Without acetylcholine the muscle never gets the order to contract. It relaxes, stops folding the skin, and the line softens. Feeling in the area is unchanged: only the movement signal is held back.' },
+        { chip: 'Duration', h: 'A temporary effect',
+          p: 'The effect starts to show after 2–3 days and peaks at around 2 weeks. Over time the nerve ending rebuilds its proteins and the signal returns, which is why treatment is usually repeated every 3–4 months.' },
+      ],
+    },
+  };
+
+  // ---------- timeline ----------
+  const TOTAL = 36;
+  const STEPS = [[0, 8], [8, 14], [14, 22], [22, 28], [28, 36]];
+  const stepAt = (t) => STEPS.findIndex(([a, b]) => t >= a && t < b);
+
+  const muscleTone = (t) => {
+    if (t < 8) return .25 + .75 * (ease(seg(t, 4, 5)) - ease(seg(t, 6.4, 7.4)));
+    if (t < 22) return .25;
+    if (t < 28) return .25 * (1 - ease(seg(t, 22.3, 25.5)));
+    return .25 * ease(seg(t, 31.5, 35.5));
+  };
+
+  // ---------- zoom panel ----------
+  const TERMINAL = 'M268,-20 C268,70 262,105 222,140 C172,180 158,260 182,322 C200,352 400,352 418,322 C442,260 428,180 378,140 C338,105 332,70 332,-20 Z';
+  $('#terminal').setAttribute('d', TERMINAL);
+  $('#tClipPath').setAttribute('d', TERMINAL);
+
+  const FOLDS = [210, 270, 330, 390];
+  let edge = 'M-20,400';
+  FOLDS.forEach((fx) => { edge += ` L${fx - 7},400 C${fx - 7},416 ${fx - 5},430 ${fx},430 C${fx + 5},430 ${fx + 7},416 ${fx + 7},400`; });
+  edge += ' L620,400';
+  const muscleD = edge + ' L620,620 L-20,620 Z';
+  $('#zMuscle').setAttribute('d', muscleD);
+  $('#mClipPath').setAttribute('d', muscleD);
+  $('#zMuscleRim').setAttribute('d', edge);
+
+  const sarc = $('#sarc');
+  for (let x = -100; x <= 700; x += 26) mk('line', { x1: x, x2: x, y1: 404, y2: 620, stroke: '#6e1614', 'stroke-opacity': .22, 'stroke-width': 4 }, sarc);
+  const striae = $('#striae');
+  for (let y = 444; y <= 600; y += 22) mk('line', { x1: -20, x2: 620, y1: y, y2: y, stroke: '#ffd6c8', 'stroke-opacity': .28, 'stroke-width': 2 }, striae);
+
+  const ZONES = [240, 300, 360];
+  const receptors = [];
+  const recG = $('#receptors');
+  ZONES.forEach((zx) => [-16, 16].forEach((o) => {
+    const cx = zx + o;
+    const g = mk('g', {}, recG);
+    const glow = mk('circle', { cx, cy: 401, r: 11, fill: '#ffd96a', opacity: 0 }, g);
+    mk('path', { d: `M${cx - 6},396 Q${cx - 6},406 ${cx},406 Q${cx + 6},406 ${cx + 6},396`, fill: 'none', stroke: '#7d1f1b', 'stroke-width': 3, 'stroke-linecap': 'round' }, g);
+    receptors.push(glow);
+  }));
+
+  const ach = [];
+  const achG = $('#achDots');
+  ZONES.forEach((zx, k) => {
+    for (let j = 0; j < 6; j++) {
+      const c = mk('circle', { r: 4.3, fill: '#3d7cc9', stroke: '#2a5f9e', 'stroke-width': 1, opacity: 0 }, achG);
+      ach.push({ c, k, j,
+        sx: zx + (j - 2.5) * 4, sy: 348,
+        tx: zx + (j < 3 ? -16 : 16) + ((j % 3) - 1) * 4, ty: 394 - (j % 3) * 3 });
+    }
+  });
+
+  const HOMES = [[240, 262], [300, 286], [360, 262], [300, 196], [234, 206], [366, 206]];
+  const DOCKS = [[240, 322], [300, 326], [360, 322]];
+  const VDOTS = [[0, 0], [-9, -5], [9, -5], [-7, 8], [7, 8], [0, -11], [0, 11]];
+  const vesG = $('#vesicles');
+  const ves = HOMES.map(() => {
+    const g = mk('g', {}, vesG);
+    mk('circle', { r: 20, fill: 'url(#vesG)', stroke: '#b5841a', 'stroke-width': 2.5 }, g);
+    VDOTS.forEach(([x, y]) => mk('circle', { cx: x, cy: y, r: 2.8, fill: '#3d7cc9' }, g));
+    return g;
+  });
+
+  const blocks = $('#blocks');
+  const blockMarks = ZONES.map((zx) => {
+    const g = mk('g', { transform: `translate(${zx} 352)`, opacity: 0 }, blocks);
+    mk('circle', { r: 10, fill: '#fbfaf6', stroke: '#9b2c26', 'stroke-width': 2.5 }, g);
+    mk('line', { x1: -6.5, y1: 6.5, x2: 6.5, y2: -6.5, stroke: '#9b2c26', 'stroke-width': 2.5, 'stroke-linecap': 'round' }, g);
+    return g;
+  });
+
+  const toxinGlyph = (parent) => {
+    const g = mk('g', { opacity: 0 }, parent);
+    const stroke = { stroke: '#5f2d8c', 'stroke-width': 3, 'stroke-linecap': 'round' };
+    mk('line', { x1: 0, y1: 0, x2: -9, y2: -9, ...stroke }, g);
+    mk('line', { x1: 0, y1: 0, x2: 9, y2: -9, ...stroke }, g);
+    mk('line', { x1: 0, y1: 0, x2: 0, y2: 11, ...stroke }, g);
+    mk('circle', { r: 7.5, fill: '#8a4cc0', stroke: '#5f2d8c', 'stroke-width': 1.5 }, g);
+    mk('circle', { cx: -10, cy: -10, r: 5.5, fill: '#a46ad6', stroke: '#5f2d8c', 'stroke-width': 1.2 }, g);
+    mk('circle', { cx: 10, cy: -10, r: 5.5, fill: '#a46ad6', stroke: '#5f2d8c', 'stroke-width': 1.2 }, g);
+    mk('circle', { cx: 0, cy: 13, r: 5, fill: '#a46ad6', stroke: '#5f2d8c', 'stroke-width': 1.2 }, g);
+    return g;
+  };
+  const toxG = $('#toxins');
+  const TOX = [
+    { start: [-40, 380], bind: [214, 352], v: 0, off: [-16, 18] },
+    { start: [-95, 372], bind: [270, 360], v: 1, off: [-18, 18] },
+    { start: [-150, 386], bind: [330, 360], v: 1, off: [18, 18] },
+    { start: [-205, 376], bind: [386, 352], v: 2, off: [16, 18] },
+  ].map((d) => ({ ...d, g: toxinGlyph(toxG) }));
+
+  // ---------- block panel ----------
+  const rnd = (() => { let s = 7; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })();
+  const bDefs = $('#block defs');
+
+  function buildLayers(g, x0, x1, id) {
+    const w = x1 - x0;
+    mk('rect', { x: x0, y: 175, width: w, height: 145, fill: '#eda9a2' }, g);
+    for (const y of [235, 265, 295]) {
+      let d = `M${x0},${y}`;
+      for (let x = x0; x <= x1; x += 6) d += ` L${x},${f1(y + 3 * Math.sin(x / 17 + y))}`;
+      mk('path', { d, fill: 'none', stroke: '#f6c9c3', 'stroke-width': 1.6, opacity: .7 }, g);
+    }
+    let epi = `M${x0},170 L${x1},170 L${x1},198`;
+    for (let x = x1; x >= x0; x -= 5) epi += ` L${x},${f1(199 + 4.5 * Math.sin(x / 11))}`;
+    mk('path', { d: epi + ' Z', fill: '#e2ad92' }, g);
+    mk('line', { x1: x0, x2: x1, y1: 179, y2: 179, stroke: '#efc9b2', 'stroke-width': 2 }, g);
+
+    const cp = mk('clipPath', { id: `fat-${id}` }, bDefs);
+    mk('rect', { x: x0, y: 315, width: w, height: 75 }, cp);
+    const fat = mk('g', { 'clip-path': `url(#fat-${id})` }, g);
+    mk('rect', { x: x0, y: 315, width: w, height: 75, fill: '#dcae37' }, fat);
+    let row = 0;
+    for (let y = 322; y <= 392; y += 19, row++) {
+      for (let x = x0 - 8 + (row % 2) * 12; x <= x1 + 12; x += 24) {
+        const r = 10.5 + rnd() * 3.5;
+        const cx = x + (rnd() - .5) * 5, cy = y + (rnd() - .5) * 4;
+        mk('circle', { cx: f1(cx), cy: f1(cy), r: f1(r), fill: '#f3d266', stroke: '#c4951f', 'stroke-width': 1.4 }, fat);
+        mk('circle', { cx: f1(cx - r * .35), cy: f1(cy - r * .35), r: f1(r * .28), fill: '#fbe9a6', opacity: .8 }, fat);
+      }
+    }
+    mk('rect', { x: x0, y: 390, width: w, height: 150, fill: 'url(#bMuscleG)' }, g);
+    const fibers = [];
+    for (let i = 0; i < 8; i++) fibers.push(mk('path', { fill: 'none', stroke: '#ffcdbf', 'stroke-opacity': .45, 'stroke-width': 2 }, g));
+    const tense = mk('rect', { x: x0, y: 390, width: w, height: 150, fill: '#6e1714', opacity: 0 }, g);
+    return { fibers, tense, x0, x1 };
+  }
+
+  const nerve = (g, ds) => {
+    ds.forEach((d) => mk('path', { d, fill: 'none', stroke: '#a8770f', 'stroke-width': 7, 'stroke-linecap': 'round' }, g));
+    ds.forEach((d) => mk('path', { d, fill: 'none', stroke: '#f1c542', 'stroke-width': 4.2, 'stroke-linecap': 'round' }, g));
+  };
+
+  const right = buildLayers($('#rightInner'), 0, 170, 'r');
+  nerve($('#rightInner'), ['M10,532 C50,490 80,450 100,400 C115,360 95,320 110,280 C120,250 108,230 115,210', 'M100,300 C120,292 135,280 140,265']);
+  mk('rect', { x: 0, y: 160, width: 170, height: 380, fill: '#3a2016', opacity: .1 }, $('#rightInner'));
+
+  const front = $('#frontFace');
+  const fl = buildLayers(front, 40, 420, 'f');
+  const ROUTE = 'M30,528 C110,474 195,444 262,424';
+  nerve(front, [
+    ROUTE + ' C320,406 380,400 430,404',
+    'M150,458 C140,420 165,385 150,345 C140,315 158,280 150,250 C146,236 152,222 148,212',
+    'M150,345 C170,330 185,318 200,300', 'M150,250 C130,240 120,230 112,222',
+    'M330,410 C340,370 318,340 330,300 C340,268 325,240 335,215', 'M330,300 C350,290 365,278 372,262',
+  ]);
+  mk('ellipse', { cx: 262, cy: 424, rx: 10, ry: 6.5, fill: '#f1c542', stroke: '#a8770f', 'stroke-width': 2 }, front);
+  const cloud = mk('circle', { cx: 262, cy: 432, r: 0, fill: 'url(#cloudG)', opacity: 0 }, front);
+  const cloudDots = [];
+  for (let i = 0; i < 16; i++) cloudDots.push({ c: mk('circle', { r: 3.4, fill: '#8a4cc0', opacity: 0 }, front), a: i * 2.39996, d: 16 + ((i * 37) % 50) });
+  const injLine = mk('line', { x1: 262, y1: 180, x2: 260, y2: 420, stroke: '#8a4cc0', 'stroke-width': 2.4, 'stroke-dasharray': '6 6', opacity: 0 }, front);
+  const route = mk('path', { d: ROUTE, fill: 'none', stroke: 'none' }, front);
+  const routeLen = route.getTotalLength();
+  const lit = mk('path', { d: ROUTE, fill: 'none', stroke: '#fff7cc', 'stroke-width': 4.5, 'stroke-linecap': 'round', 'stroke-dasharray': `70 ${routeLen + 200}`, opacity: 0 }, front);
+  const glow = mk('circle', { r: 16, fill: 'url(#glowG)', opacity: 0 }, front);
+
+  const CREASES = [{ x: 125, k: .55 }, { x: 232, k: 1 }, { x: 338, k: .7 }];
+  const creaseEls = CREASES.map(() => ({
+    l: mk('polygon', { fill: '#c99372' }, $('#creases')),
+    r: mk('polygon', { fill: '#ebc5a3' }, $('#creases')),
+    line: mk('line', { stroke: '#8a5638', 'stroke-linecap': 'round' }, $('#creases')),
+  }));
+  const DX = 170, DY = -105;
+
+  // ---------- render ----------
+  const els = {
+    sarc, zPulse: $('#zPulse'), zStatus: $('#zStatus'),
+    achLbl: $('#zAchLbl'), toxLbl: $('#zToxLbl'), noLbl: $('#zNoLbl'),
+    top: $('#topFace'), frontClip: $('#frontClipPath'), frontEdge: $('#frontEdge'),
+    syringe: $('#syringe'), liquid: $('#liquid'), stopper: $('#stopper'), rod: $('#rod'), thumb: $('#thumb'),
+    needleLbl: $('#needleLbl'), zMark: $('#zMark'),
+  };
+  let lang = 'es';
+
+  const fiberD = (x0, x1, y, A, ph) => {
+    let d = `M${x0 - 10},${f1(y + A * Math.sin((x0 - 10) * .14 + ph))}`;
+    for (let x = x0 - 2; x <= x1 + 10; x += 8) d += ` L${x},${f1(y + A * Math.sin(x * .14 + ph))}`;
+    return d;
+  };
+
+  function vesiclePos(i, t) {
+    const [hx, hy] = HOMES[i];
+    const bob = Math.sin(t * 1.4 + i * 1.7) * 1.6;
+    if (i < 3) {
+      const [dx, dy] = DOCKS[i];
+      if (t < 8) {
+        if (t < 3.3) { const p = ease(seg(t, 2.5, 3.3)); return { x: lerp(hx, dx, p), y: lerp(hy + bob, dy, p), s: 1 }; }
+        if (t < 3.8) return { x: dx, y: dy + 4 * seg(t, 3.3, 3.8), s: 1 - seg(t, 3.3, 3.8) };
+        if (t < 6.6) return { x: hx, y: hy, s: 0 };
+        return { x: hx, y: hy + bob, s: easeOut(seg(t, 6.6, 7.6)) };
+      }
+      const tw = Math.sin(Math.PI * seg(t, 18.3, 19.6));
+      return { x: lerp(hx, dx, .22 * tw) + Math.sin(t * 38) * 1.6 * tw, y: lerp(hy + bob, dy, .22 * tw), s: 1 };
+    }
+    return { x: hx, y: hy + bob, s: 1 };
+  }
+
+  function render(t) {
+    const m = muscleTone(t);
+
+    // zoom: muscle
+    const sx = 1 - .14 * m;
+    els.sarc.setAttribute('transform', `translate(300 0) scale(${sx.toFixed(4)} 1) translate(-300 0)`);
+    const L = I18N[lang];
+    const status = (t < 8 && m > .6) ? L.stCon : (t >= 23 && t < 32) ? L.stRel : L.stRest;
+    if (els.zStatus.textContent !== status) els.zStatus.textContent = status;
+
+    // zoom: impulse
+    let zp = -1;
+    if (t >= 2.0 && t <= 2.9) zp = seg(t, 2.0, 2.9);
+    else if (t >= 17.6 && t <= 18.5) zp = seg(t, 17.6, 18.5);
+    if (zp >= 0) {
+      els.zPulse.setAttribute('cy', f1(lerp(-40, 310, ease(zp))));
+      els.zPulse.setAttribute('opacity', Math.sin(Math.PI * zp).toFixed(3));
+    } else els.zPulse.setAttribute('opacity', 0);
+
+    // zoom: vesicles
+    const vp = HOMES.map((_, i) => vesiclePos(i, t));
+    vp.forEach((p, i) => {
+      ves[i].setAttribute('transform', `translate(${f1(p.x)} ${f1(p.y)}) scale(${p.s.toFixed(3)})`);
+      ves[i].setAttribute('opacity', p.s > .01 ? Math.min(1, p.s * 1.4).toFixed(3) : 0);
+    });
+
+    // zoom: acetylcholine
+    const achOn = t >= 3.4 && t <= 7.2;
+    ach.forEach((a) => {
+      if (!achOn) { a.c.setAttribute('opacity', 0); return; }
+      const q = easeOut(seg(t, 3.45 + a.j * .03, 4.6));
+      const drift = seg(t, 6.3, 7.2);
+      const x = lerp(a.sx, a.tx, q) + Math.sin(q * Math.PI * 2 + a.j) * 4 * (1 - q) + (a.tx - ZONES[a.k]) * .8 * drift;
+      const y = lerp(a.sy, a.ty, q) - 10 * drift;
+      a.c.setAttribute('cx', f1(x)); a.c.setAttribute('cy', f1(y));
+      a.c.setAttribute('opacity', (seg(t, 3.4, 3.55) * (1 - drift)).toFixed(3));
+    });
+    const rg = clamp(seg(t, 4.3, 4.7) - seg(t, 6.3, 7.0));
+    receptors.forEach((r) => r.setAttribute('opacity', (rg * .8).toFixed(3)));
+
+    // zoom: toxin
+    const toxFade = 1 - seg(t, 29.5, 33);
+    TOX.forEach((d, i) => {
+      if (t < 9.8 || t > 33.5) { d.g.setAttribute('opacity', 0); return; }
+      const q = ease(seg(t, 10.0 + .35 * i, 12.8 + .35 * i));
+      let x = lerp(d.start[0], d.bind[0], q);
+      let y = lerp(d.start[1], d.bind[1], q) + Math.sin(t * 3 + i) * 5 * (1 - q);
+      const r = ease(seg(t, 14.3 + .25 * i, 15.8 + .25 * i));
+      if (r > 0) {
+        const v = vp[d.v];
+        x = lerp(x, v.x + d.off[0], r);
+        y = lerp(y, v.y + d.off[1], r);
+      }
+      const rot = Math.sin(t * 1.7 + i * 2) * 14;
+      d.g.setAttribute('transform', `translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(1.1)`);
+      d.g.setAttribute('opacity', toxFade.toFixed(3));
+    });
+    const blockOp = win(t, 18.9, 29, .35, .8);
+    blockMarks.forEach((b) => b.setAttribute('opacity', blockOp.toFixed(3)));
+    els.achLbl.setAttribute('opacity', win(t, 3.6, 7.1, .3, .4).toFixed(3));
+    els.toxLbl.setAttribute('opacity', win(t, 10.8, 29.5, .4, .6).toFixed(3));
+    els.noLbl.setAttribute('opacity', win(t, 19.0, 28.6, .4, .6).toFixed(3));
+
+    // block: muscle fibers
+    [fl, right].forEach((f) => {
+      f.fibers.forEach((p, i) => p.setAttribute('d', fiberD(f.x0, f.x1, 402 + i * 18, 1.2 + 6 * m, i * 1.3 + t * .4 * m)));
+      f.tense.setAttribute('opacity', (.28 * Math.max(0, m - .25)).toFixed(3));
+    });
+
+    // block: skin creases
+    let dips = '';
+    CREASES.forEach((c, i) => {
+      const a = c.k * (2 + 16 * m);
+      const hw = c.k * (4 + 9 * m) + 2;
+      dips += ` L${f1(c.x - hw)},175 L${c.x},${f1(175 + a)} L${f1(c.x + hw)},175`;
+      const e = creaseEls[i];
+      e.l.setAttribute('points', `${f1(c.x - hw)},175 ${c.x},${f1(175 + a)} ${c.x + DX},${f1(175 + a + DY)} ${f1(c.x - hw + DX)},${175 + DY}`);
+      e.r.setAttribute('points', `${c.x},${f1(175 + a)} ${f1(c.x + hw)},175 ${f1(c.x + hw + DX)},${175 + DY} ${c.x + DX},${f1(175 + a + DY)}`);
+      e.l.setAttribute('opacity', (.3 + .55 * m).toFixed(3));
+      e.r.setAttribute('opacity', (.3 + .5 * m).toFixed(3));
+      e.line.setAttribute('x1', c.x); e.line.setAttribute('y1', f1(175 + a));
+      e.line.setAttribute('x2', c.x + DX); e.line.setAttribute('y2', f1(175 + a + DY));
+      e.line.setAttribute('stroke-width', f1(1 + 2.2 * m * c.k + .4));
+      e.line.setAttribute('stroke-opacity', (.35 + .55 * m).toFixed(3));
+    });
+    els.top.setAttribute('d', `M40,175${dips} L420,175 L590,70 L210,70 Z`);
+    const fd = `M40,175${dips} L420,175 L420,535 L40,535 Z`;
+    els.frontClip.setAttribute('d', fd);
+    els.frontEdge.setAttribute('d', fd);
+
+    // block: impulse
+    let bp = -1;
+    if (t >= .3 && t <= 2.1) bp = seg(t, .3, 2.1);
+    else if (t >= 15.9 && t <= 17.7) bp = seg(t, 15.9, 17.7);
+    if (bp >= 0) {
+      const s = bp * routeLen;
+      const pt = route.getPointAtLength(s);
+      glow.setAttribute('cx', f1(pt.x)); glow.setAttribute('cy', f1(pt.y));
+      const o = Math.min(1, bp * 8, (1 - bp) * 8);
+      glow.setAttribute('opacity', o.toFixed(3));
+      lit.setAttribute('stroke-dashoffset', f1(70 - s));
+      lit.setAttribute('opacity', o.toFixed(3));
+    } else { glow.setAttribute('opacity', 0); lit.setAttribute('opacity', 0); }
+
+    // block: toxin cloud
+    const g = ease(seg(t, 9.6, 12.5)) * (t < 9.6 ? 0 : 1);
+    const cf = 1 - seg(t, 29, 33.5);
+    const shown = t >= 9.6 && t < 33.5;
+    cloud.setAttribute('r', f1(20 + 70 * g));
+    cloud.setAttribute('opacity', shown ? (g * cf).toFixed(3) : 0);
+    cloudDots.forEach((d) => {
+      const dist = d.d * g * (1 + .25 * seg(t, 12.5, 22));
+      d.c.setAttribute('cx', f1(262 + Math.cos(d.a) * dist * 1.3));
+      d.c.setAttribute('cy', f1(432 + Math.sin(d.a) * dist * .8));
+      d.c.setAttribute('opacity', shown ? (Math.min(1, g * 2) * cf * .9).toFixed(3) : 0);
+    });
+    injLine.setAttribute('opacity', (win(t, 9.3, 12.2, .4, .8) * .9).toFixed(3));
+    injLine.setAttribute('stroke-dashoffset', f1(-t * 24));
+
+    // block: syringe
+    const sOp = win(t, 7.9, 12.6, .3, .5);
+    if (sOp > 0) {
+      const ap = ease(seg(t, 8.0, 9.2)), rp = ease(seg(t, 11.0, 12.2));
+      const dist = 190 * (1 - ap) + 190 * rp;
+      const tx = 262 + dist * .5299, ty = 177 - dist * .848;
+      els.syringe.setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) rotate(32)`);
+      const Ly = -320 + 130 * ease(seg(t, 9.4, 10.8));
+      els.liquid.setAttribute('y', f1(Ly)); els.liquid.setAttribute('height', f1(-140 - Ly));
+      els.stopper.setAttribute('y', f1(Ly - 14));
+      els.rod.setAttribute('y', f1(Ly - 14 - 160));
+      els.thumb.setAttribute('y', f1(Ly - 14 - 168));
+    }
+    els.syringe.setAttribute('opacity', sOp.toFixed(3));
+    els.needleLbl.setAttribute('opacity', win(t, 8.2, 12.4, .4, .4).toFixed(3));
+    els.zMark.setAttribute('r', f1(20 + 2.5 * Math.sin(t * 3)));
+
+    updateUI(t);
+  }
+
+  // ---------- UI ----------
+  const chipsEl = $('#chips');
+  const chips = STEPS.map((_, i) => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.dataset.step = i;
+    b.innerHTML = `<span class="chip-fill"></span><span class="chip-n">${i + 1}</span><span class="chip-name"></span>`;
+    li.appendChild(b); chipsEl.appendChild(li);
+    b.addEventListener('click', () => go(i));
+    return b;
+  });
+  const stepOf = $('#stepOf'), stepTitle = $('#stepTitle'), stepText = $('#stepText');
+  const timeline = $('#timeline'), tlItems = [...timeline.querySelectorAll('li')];
+  let shownStep = -1;
+
+  function writeStep(i) {
+    const L = I18N[lang], s = L.steps[i];
+    stepOf.textContent = L.stepOf(i + 1);
+    stepTitle.textContent = s.h;
+    stepText.textContent = s.p;
+    timeline.hidden = i !== 4;
+    for (const el of [stepTitle, stepText]) { el.classList.remove('fade'); void el.offsetWidth; el.classList.add('fade'); }
+    chips.forEach((c, k) => { if (k === i) c.setAttribute('aria-current', 'step'); else c.removeAttribute('aria-current'); });
+  }
+
+  function updateUI(t) {
+    const i = Math.max(0, stepAt(t));
+    if (i !== shownStep) { shownStep = i; writeStep(i); }
+    chips.forEach((c, k) => c.style.setProperty('--p', seg(t, STEPS[k][0], STEPS[k][1]).toFixed(3)));
+    if (i === 4) {
+      const q = seg(t, 28.6, 35);
+      timeline.style.setProperty('--q', q.toFixed(3));
+      tlItems.forEach((li, k) => li.classList.toggle('on', q >= [0, .5, 1][k] - .001));
+    }
+  }
+
+  function applyLang(l) {
+    lang = l;
+    const L = I18N[l];
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach((el) => { const v = L[el.dataset.i18n]; if (typeof v === 'string') el.textContent = v; });
+    document.title = L.title;
+    chips.forEach((c, k) => { c.querySelector('.chip-name').textContent = L.steps[k].chip; });
+    document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+    $('#prev').setAttribute('aria-label', L.prev);
+    $('#next').setAttribute('aria-label', L.next);
+    $('#zoomCapTitle').textContent = L.zoomCap;
+    $('#blockCapTitle').textContent = L.blockCap;
+    setPlayIcon();
+    shownStep = -1;
+    render(time);
+    try { localStorage.setItem('botox-lang', l); } catch (e) {}
+  }
+
+  // ---------- playback ----------
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let time = reduce ? 20.5 : 0;
+  let playing = !reduce;
+  let last = null;
+
+  function setPlayIcon() {
+    $('#playIcon').setAttribute('d', playing ? 'M7 5h4v14H7zM13 5h4v14h-4z' : 'M8 5v14l11-7z');
+    $('#play').setAttribute('aria-label', playing ? I18N[lang].pause : I18N[lang].play);
+  }
+  function tick(now) {
+    if (playing) {
+      if (last != null) time = (time + Math.min(.1, (now - last) / 1000)) % TOTAL;
+      last = now;
+      render(time);
+    } else last = null;
+    requestAnimationFrame(tick);
+  }
+  function go(i) {
+    const n = (i + STEPS.length) % STEPS.length;
+    time = STEPS[n][0] + .001;
+    render(time);
+  }
+  $('#play').addEventListener('click', () => { playing = !playing; setPlayIcon(); });
+  $('#prev').addEventListener('click', () => {
+    const i = Math.max(0, stepAt(time));
+    go(time - STEPS[i][0] > 1.2 ? i : i - 1);
+  });
+  $('#next').addEventListener('click', () => go(Math.max(0, stepAt(time)) + 1));
+  document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (e.key === ' ') { e.preventDefault(); playing = !playing; setPlayIcon(); }
+    else if (e.key === 'ArrowRight') go(Math.max(0, stepAt(time)) + 1);
+    else if (e.key === 'ArrowLeft') go(Math.max(0, stepAt(time)) - 1);
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem('botox-lang'); } catch (e) {}
+  applyLang(saved === 'en' ? 'en' : 'es');
+  requestAnimationFrame(tick);
+})();
+</script>
